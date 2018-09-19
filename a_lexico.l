@@ -1,9 +1,7 @@
 %{
-#include <iostream>
-using namespace std;
-extern "C" int yylex();
+#include "a_sintatico.tab.h"
 int lines = 0;
-enum yytokentype{
+/*enum yytokentype{
 	NUMBER = 258,
 	ADD = 259,
 	SUB = 260,
@@ -30,27 +28,27 @@ enum yytokentype{
 	COLON = 281,
 	COMMA = 282,
 	ID = 283
-};
-
-int yylval;
+};*/
 
 %}
+
+
 %%
 while    { return WHILE; }
 var      { return VAR; }
 def      { return DEF; }
 int      { return INT; }
 bool     { return BOOL; }
-true     { cout << "palavra reservada:" << yytext << endl; }
-false    { cout << "palavra reservada:" << yytext << endl; }
+true     { return FALSE_; }
+false    { return TRUE_; }
 for      { return FOR; }
 if       { return IF; }
 else     { return ELSE; }
 write    { return WRITE; }
 read     { return READ; }
-return   { cout << "palavra reservada:" << yytext << endl; }
-skip     { cout << "palavra reservada:" << yytext << endl; }
-stop     { cout << "palavra reservada:" << yytext << endl; }
+return   { return RETURN; }
+skip     { return SKIP; }
+stop     { return STOP; }
 string   { return STRING; }
 "("      { return O_PARENTHESIS; }
 ")"      { return C_PARENTHESIS; }
@@ -64,48 +62,33 @@ string   { return STRING; }
 "+"      { return ADD; }
 "*"      { return MUL; }
 "/"      { return DIV; }
-"%"      { cout << "simbolo:" << yytext << endl; }
-"=="     { cout << "simbolo:" << yytext << endl; }
-"!="     { cout << "simbolo:" << yytext << endl; }
-">"      { cout << "simbolo:" << yytext << endl; }
-">="     { cout << "simbolo:" << yytext << endl; }
-"<"      { cout << "simbolo:" << yytext << endl; }
-"<="     { cout << "simbolo:" << yytext << endl; }
-"||"     { cout << "simbolo:" << yytext << endl; }
-"&&"     { cout << "simbolo:" << yytext << endl; }
-"!"      { cout << "simbolo:" << yytext << endl; }
-"="      { cout << "simbolo:" << yytext << endl; }
-"+="     { cout << "simbolo:" << yytext << endl; }
-"-="     { cout << "simbolo:" << yytext << endl; }
-"*="     { cout << "simbolo:" << yytext << endl; }
-"/="     { cout << "simbolo:" << yytext << endl; }
-"%="     { cout << "simbolo:" << yytext << endl; }
-"?"      { cout << "simbolo:" << yytext << endl; }
+"%"      { return PERCENT; }
+"=="     { return EQUAL; }
+"!="     { return NOT_EQUAL; }
+">"      { return GREATER; }
+">="     { return GREATER_EQUAL; }
+"<"      { return LESS; }
+"<="     { return LESS_EQUAL; }
+"||"     { return OR; }
+"&&"     { return AND; }
+"!"      { return NOT; }
+"="      { return ATR; }
+"+="     { return P_EQUAL; }
+"-="     { return M_EQUAL; }
+"*="     { return T_EQUAL; }
+"/="     { return D_EQUAL; }
+"%="     { return R_EQUAL; }
+"?"      { return INTERROGATION; }
 ":"      { return COLON; }
-\/\/.*   { cout << "comentario:" << yytext << endl; }
+\/\/.*   { }
 \"(\\.|[^"\\])*\"    { return STRING; }
-\"(\\.|[^"\\])*$ { cout << "erro: string nao fechada" << " linha: " << lines+1 << endl; }
+\"(\\.|[^"\\])*$ { perror( "erro: string nao fechada "); }
 [ \t]          ;
 \n {lines++;}
 [0-9]{1,10}   { yylval = atoi(yytext); return NUMBER;}
-[0-9]{10,}   { cout << "erro: inteiro com tamanho excessivo: " << yytext << endl; }
-[0-9]+[a-zA-Z0-9_]*   { cout << "erro: identificador iniciou com numero: " << yytext << " linha: " << lines+1 << endl; }
+[0-9]{10,}   { perror( "erro: inteiro com tamanho excessivo: "); }
+[0-9]+[a-zA-Z0-9_]*   { perror( "erro: identificador iniciou com numero: "); }
 [a-zA-Z_][a-zA-Z0-9_]* { return ID; }
-.                { cout << "erro :" << yytext << " linha: " << lines+1 << endl; }
+.                { perror( "erro: "); }
 %%
-int main(int, char**) {
-	
-	// open a file handle to a particular file:
-	FILE *myfile = fopen("texto.txt", "r");
-	// make sure it's valid:
-	if (!myfile) {
-		cout << "I can't open a.snazzle.file!" << endl;
-		return -1;
-	}
-	// set lex to read from it instead of defaulting to STDIN:
-	yyin = myfile;
-	
-	// lex through the input:
-	while(yylex());
-	cout << "Total de linhas: " << lines << endl;
-}
+
