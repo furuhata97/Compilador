@@ -1,3 +1,4 @@
+%option noyywrap
 %{
 #include "a_sintatico.tab.h"
 int lines = 0;
@@ -10,7 +11,7 @@ int lines = 0;
 	WHILE = 263,
 	VAR = 264,
 	DEF = 265,
- 	INT = 266,
+	INT = 266,
 	BOOL = 267,
 	FOR = 268,
 	IF = 269,
@@ -35,7 +36,8 @@ int lines = 0;
 
 %%
 while    { return WHILE; }
-var      { return VAR; }
+var      { yylval.s = strdup(yytext);
+			return VAR; }
 def      { return DEF; }
 int      { return INT; }
 bool     { return BOOL; }
@@ -56,7 +58,8 @@ string   { return STRING; }
 "]"      { return C_BRACKETS; }
 "{"      { return O_BRACES; }
 "}"      { return C_BRACES; }
-","      { return COMMA; }
+","      { yylval.s = strdup(yytext);
+			return COMMA; }
 ";"      { return SEMICOLON; }
 "-"      { return SUB; }
 "+"      { return ADD; }
@@ -72,7 +75,8 @@ string   { return STRING; }
 "||"     { return OR; }
 "&&"     { return AND; }
 "!"      { return NOT; }
-"="      { return ATR; }
+"="      { yylval.s = strdup(yytext);
+			return ATR; }
 "+="     { return P_EQUAL; }
 "-="     { return M_EQUAL; }
 "*="     { return T_EQUAL; }
@@ -85,10 +89,14 @@ string   { return STRING; }
 \"(\\.|[^"\\])*$ { perror( "erro: string nao fechada "); }
 [ \t]          ;
 \n {lines++;}
-[0-9]{1,10}   { yylval = atoi(yytext); return NUMBER;}
+[0-9]{1,10}   { yylval.s = strdup(yytext);
+				return NUMBER;}
 [0-9]{10,}   { perror( "erro: inteiro com tamanho excessivo: "); }
 [0-9]+[a-zA-Z0-9_]*   { perror( "erro: identificador iniciou com numero: "); }
-[a-zA-Z_][a-zA-Z0-9_]* { return ID; }
-.                { perror( "erro: "); }
+[a-zA-Z_][a-zA-Z0-9_]* { yylval.s = strdup(yytext);
+			return ID; }
+<<EOF>> {   perror( "erro: fim de arquivo");
+            yyterminate();}
+.                { perror( "erro: alguma coisa"); }
 %%
 

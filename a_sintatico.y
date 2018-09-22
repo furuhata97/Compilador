@@ -1,10 +1,14 @@
 %{
 #include <cstdio>
 #include <iostream>
+#include <string>
+#include <list>
+#include <stdio.h>
+#include <memory.h>
 using namespace std;
 
 // Declare stuff from Flex that Bison needs to know about:
-extern int yylex();
+int yylex(void);
 extern int yyparse();
 extern FILE *yyin;
  
@@ -12,15 +16,19 @@ void yyerror(const char *s);
 %}
 
 
-%token NUMBER
+%union{
+	char *s;
+}
+
+%token  <s> NUMBER
 %token	ADD
 %token	SUB
 %token	MUL
 %token	DIV
 %token	WHILE
-%token	VAR
+%token	<s> VAR
 %token	DEF
-%token 	INT
+%token  INT
 %token	BOOL
 %token	FOR
 %token	IF
@@ -36,8 +44,8 @@ void yyerror(const char *s);
 %token	C_BRACES
 %token	SEMICOLON
 %token	COLON
-%token	COMMA
-%token	ID
+%token  <s> COMMA
+%token	<s> ID
 %token  TRUE_
 %token  FALSE_
 %token  RETURN
@@ -53,7 +61,7 @@ void yyerror(const char *s);
 %token OR
 %token AND
 %token NOT
-%token ATR
+%token <s> ATR
 %token P_EQUAL
 %token M_EQUAL
 %token T_EQUAL
@@ -61,27 +69,43 @@ void yyerror(const char *s);
 %token R_EQUAL
 %token INTERROGATION
 
+%type <s> listaSpecVars
+%type <s> specVar
+%type <s> specVarSimplesIni
+%type <s> specVarSimples
+
+
 %%
 // This is the actual grammar that bison will parse, but for right now it's just
 // something silly to echo to the screen what bison gets from flex.  We'll
 // make a real one shortly:
 
 
-decVar: VAR listaSpecVars COLON INT SEMICOLON { cout << "declaracao de variavel: " << $1 << endl;}
+decVar: VAR listaSpecVars COLON INT SEMICOLON {cout << "declaracao de variavel: " << $2 << endl;}
+		| VAR listaSpecVars COLON INT SEMICOLON decVar {cout << "declaracao de variavel: " << $2 << endl;}
+		|error decVar { yyerrok; yyclearin;printf("set error abourt!");}
 	;
 
-listaSpecVars: specVar
-	| listaSpecVars COMMA specVar
+listaSpecVars: specVar {}
+	| listaSpecVars COMMA specVar {char * str3 = (char *) malloc(1 + strlen($1)+ strlen($2)+ strlen($3) );
+      strcpy(str3, $1);
+      strcat(str3, $2);
+      strcat(str3, $3);
+      $$ = str3;}
 	;
 
-specVar: specVarSimples
-	| specVarSimplesIni
+specVar: specVarSimples {}
+	| specVarSimplesIni {}
 	;
 
-specVarSimples: ID
+specVarSimples: ID {}
 	;
 
-specVarSimplesIni: ID ATR NUMBER
+specVarSimplesIni: ID ATR NUMBER {char * str3 = (char *) malloc(1 + strlen($1)+ strlen($2)+ strlen($3) );
+      strcpy(str3, $1);
+      strcat(str3, $2);
+      strcat(str3, $3);
+      $$ = str3;}
 	;
 %%
 
@@ -103,7 +127,5 @@ int main(int, char**) {
 }
 
 void yyerror(const char *s) {
-	cout << "EEK, parse error!  Message: " << s << endl;
-	// might as well halt now:
-	exit(-1);
+	
 }
