@@ -88,7 +88,7 @@ string   { return STRING; }
 \"(\\.|[^"\\])*\"    { return STRING; }
 \"(\\.|[^"\\])*$ { perror( "erro: string nao fechada "); }
 [ \t]          ;
-\n {lines++;}
+[\r\n|\n] {lines++;}
 [0-9]{1,10}   { yylval.s = strdup(yytext);
 				return NUMBER;}
 [0-9]{10,}   { perror( "erro: inteiro com tamanho excessivo: "); }

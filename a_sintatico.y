@@ -111,7 +111,7 @@ specVarSimplesIni: ID ATR NUMBER {char * str3 = (char *) malloc(1 + strlen($1)+ 
 
 int main(int, char**) {
 	// Open a file handle to a particular file:
-	FILE *myfile = fopen("texto.txt", "r");
+	FILE *myfile = fopen("teste1.txt", "r");
 	// Make sure it is valid:
 	if (!myfile) {
 		cout << "I can't open a.snazzle.file!" << endl;
