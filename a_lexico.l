@@ -2,47 +2,23 @@
 %{
 #include "a_sintatico.tab.h"
 int lines = 0;
-/*enum yytokentype{
-	NUMBER = 258,
-	ADD = 259,
-	SUB = 260,
-	MUL = 261,
-	DIV = 262,
-	WHILE = 263,
-	VAR = 264,
-	DEF = 265,
-	INT = 266,
-	BOOL = 267,
-	FOR = 268,
-	IF = 269,
-	ELSE = 270,
-	WRITE = 271,
-	READ = 272,
-	STRING = 273,
-	O_PARENTHESIS = 274,
-	C_PARENTHESIS = 275,
-	O_BRACKETS = 276,
-	C_BRACKETS = 277,
-	O_BRACES = 278,
-	C_BRACES = 279,
-	SEMICOLON = 280,
-	COLON = 281,
-	COMMA = 282,
-	ID = 283
-};*/
-
 %}
 
 
 %%
 while    { return WHILE; }
 var      { yylval.s = strdup(yytext);
-			return VAR; }
-def      { return DEF; }
-int      { return INT; }
-bool     { return BOOL; }
-true     { return FALSE_; }
-false    { return TRUE_; }
+		   return VAR; }
+def      {  yylval.s = strdup(yytext);
+			return DEF; }
+int      { yylval.s = strdup(yytext);
+		   return INT; }
+bool     { yylval.s = strdup(yytext);
+		   return BOOL; }
+true     {  yylval.s = strdup(yytext);
+			return FALSE_; }
+false    {  yylval.s = strdup(yytext);
+			return TRUE_; }
 for      { return FOR; }
 if       { return IF; }
 else     { return ELSE; }
@@ -51,20 +27,32 @@ read     { return READ; }
 return   { return RETURN; }
 skip     { return SKIP; }
 stop     { return STOP; }
-string   { return STRING; }
-"("      { return O_PARENTHESIS; }
-")"      { return C_PARENTHESIS; }
-"["      { return O_BRACKETS; }
-"]"      { return C_BRACKETS; }
-"{"      { return O_BRACES; }
-"}"      { return C_BRACES; }
+string   { yylval.s = strdup(yytext);
+		   return STRING_TYPE; }
+"("      {  yylval.s = strdup(yytext);
+			return O_PARENTHESIS; }
+")"      {  yylval.s = strdup(yytext);
+			return C_PARENTHESIS; }
+"["      {  yylval.s = strdup(yytext);
+			return O_BRACKETS; }
+"]"      {  yylval.s = strdup(yytext);
+			return C_BRACKETS; }
+"{"      {  yylval.s = strdup(yytext);
+			return O_BRACES; }
+"}"      {  yylval.s = strdup(yytext);
+			return C_BRACES; }
 ","      { yylval.s = strdup(yytext);
-			return COMMA; }
-";"      { return SEMICOLON; }
-"-"      { return SUB; }
-"+"      { return ADD; }
-"*"      { return MUL; }
-"/"      { return DIV; }
+		   return COMMA; }
+";"      {  yylval.s = strdup(yytext);
+			return SEMICOLON; }
+"-"      {  yylval.s = strdup(yytext);
+			return SUB; }
+"+"      {  yylval.s = strdup(yytext);
+			return ADD; }
+"*"      {  yylval.s = strdup(yytext);
+			return MUL; }
+"/"      {  yylval.s = strdup(yytext);
+			return DIV; }
 "%"      { return PERCENT; }
 "=="     { return EQUAL; }
 "!="     { return NOT_EQUAL; }
@@ -76,27 +64,34 @@ string   { return STRING; }
 "&&"     { return AND; }
 "!"      { return NOT; }
 "="      { yylval.s = strdup(yytext);
-			return ATR; }
+		   return ATR; }
 "+="     { return P_EQUAL; }
 "-="     { return M_EQUAL; }
 "*="     { return T_EQUAL; }
 "/="     { return D_EQUAL; }
 "%="     { return R_EQUAL; }
 "?"      { return INTERROGATION; }
-":"      { return COLON; }
-\/\/.*   { }
-\"(\\.|[^"\\])*\"    { return STRING; }
-\"(\\.|[^"\\])*$ { perror( "erro: string nao fechada "); }
-[ \t]          ;
-[\r\n|\n] {lines++;}
-[0-9]{1,10}   { yylval.s = strdup(yytext);
-				return NUMBER;}
-[0-9]{10,}   { perror( "erro: inteiro com tamanho excessivo: "); }
-[0-9]+[a-zA-Z0-9_]*   { perror( "erro: identificador iniciou com numero: "); }
+":"      {  yylval.s = strdup(yytext);
+			return COLON; }
+\/\/.*   			   { }
+\"(\\.|[^"\\])*\"      {yylval.s = strdup(yytext); 
+						return STRING; }
+\"(\\.|[^"\\])*$ 	   { perror( "erro: string nao fechada "); }
+[ \t]                  { };
+[\r\n|\n]              {lines++;}
+[0-9]{1,10}            { yylval.s = strdup(yytext);
+				         return NUMBER;}
+[0-9]{10,}             { perror( "erro: inteiro com tamanho excessivo: "); }
+[0-9]+[a-zA-Z0-9_]*    { perror( "erro: identificador iniciou com numero: "); }
 [a-zA-Z_][a-zA-Z0-9_]* { yylval.s = strdup(yytext);
-			return ID; }
-<<EOF>> {   perror( "erro: fim de arquivo");
-            yyterminate();}
-.                { perror( "erro: alguma coisa"); }
+						 return ID; }
+<<EOF>>    			   {   
+						 yyterminate();
+						 //yylval.s = strdup(yytext);
+						 //return ENDOFFILE;
+					   }
+.                      { 
+			             perror( "erro: alguma coisa");
+		               }
 %%
 

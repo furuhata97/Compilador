@@ -46,4 +46,3 @@ abcdefghijklmnopqrstu
 "Teste de string nao fechada
 tre
 fgt  tryt
-

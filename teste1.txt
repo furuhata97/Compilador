@@ -1,2 +1,10 @@
 var a:int;
-var b = 2, c = 3: int;
+var b = (7 + 1) + a, c = a, d = 8 * 4: string;
+var x[a-7]: int;
+var f = "String": string;
+var g = true: bool;
+var r[3] = {4, 3, 7}: int;
+var ff[1] = {1}: string;
+def proc(){
+	
+}
