@@ -1043,23 +1043,24 @@ YY_RULE_SETUP
 case 45:
 YY_RULE_SETUP
 #line 73 "a_lexico.l"
-{ return INTERROGATION; }
+{  yylval.s = strdup(yytext);
+			return INTERROGATION; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 74 "a_lexico.l"
+#line 75 "a_lexico.l"
 {  yylval.s = strdup(yytext);
 			return COLON; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 76 "a_lexico.l"
+#line 77 "a_lexico.l"
 { }
 	YY_BREAK
 case 48:
 /* rule 48 can match eol */
 YY_RULE_SETUP
-#line 77 "a_lexico.l"
+#line 78 "a_lexico.l"
 {yylval.s = strdup(yytext); 
 						return STRING; }
 	YY_BREAK
@@ -1070,44 +1071,44 @@ YY_LINENO_REWIND_TO(yy_cp - 1);
 (yy_c_buf_p) = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 79 "a_lexico.l"
+#line 80 "a_lexico.l"
 { perror( "erro: string nao fechada "); }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 80 "a_lexico.l"
+#line 81 "a_lexico.l"
 { };
 	YY_BREAK
 case 51:
 /* rule 51 can match eol */
 YY_RULE_SETUP
-#line 81 "a_lexico.l"
+#line 82 "a_lexico.l"
 {lines++;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 82 "a_lexico.l"
+#line 83 "a_lexico.l"
 { yylval.s = strdup(yytext);
 				         return NUMBER;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 84 "a_lexico.l"
+#line 85 "a_lexico.l"
 { perror( "erro: inteiro com tamanho excessivo: "); }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 85 "a_lexico.l"
+#line 86 "a_lexico.l"
 { perror( "erro: identificador iniciou com numero: "); }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 86 "a_lexico.l"
+#line 87 "a_lexico.l"
 { yylval.s = strdup(yytext);
 						 return ID; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 88 "a_lexico.l"
+#line 89 "a_lexico.l"
 {   
 						 yyterminate();
 						 //yylval.s = strdup(yytext);
@@ -1116,17 +1117,17 @@ case YY_STATE_EOF(INITIAL):
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 93 "a_lexico.l"
+#line 94 "a_lexico.l"
 { 
 			             perror( "erro: alguma coisa");
 		               }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 96 "a_lexico.l"
+#line 97 "a_lexico.l"
 ECHO;
 	YY_BREAK
-#line 1130 "lex.yy.c"
+#line 1131 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -2129,7 +2130,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 96 "a_lexico.l"
+#line 97 "a_lexico.l"
 
 
 

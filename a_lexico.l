@@ -70,7 +70,8 @@ string   { yylval.s = strdup(yytext);
 "*="     { return T_EQUAL; }
 "/="     { return D_EQUAL; }
 "%="     { return R_EQUAL; }
-"?"      { return INTERROGATION; }
+"?"      {  yylval.s = strdup(yytext);
+			return INTERROGATION; }
 ":"      {  yylval.s = strdup(yytext);
 			return COLON; }
 \/\/.*   			   { }
