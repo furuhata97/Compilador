@@ -30,85 +30,108 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_A_SINTATICO_TAB_H_INCLUDED
-# define YY_YY_A_SINTATICO_TAB_H_INCLUDED
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 1 "comp.yacc" /* yacc.c:1909  */
+
+      #include <list>
+      using namespace std;
+
+#line 49 "y.tab.h" /* yacc.c:1909  */
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUMBER = 258,
-    ADD = 259,
-    SUB = 260,
-    MUL = 261,
-    DIV = 262,
-    INTERROGATION = 263,
-    COLON = 264,
-    NEG = 265,
-    WHILE = 266,
-    VAR = 267,
-    DEF = 268,
-    INT = 269,
-    BOOL = 270,
-    FOR = 271,
-    IF = 272,
-    ELSE = 273,
-    WRITE = 274,
-    READ = 275,
-    STRING_TYPE = 276,
-    STRING = 277,
-    O_PARENTHESIS = 278,
-    C_PARENTHESIS = 279,
-    O_BRACKETS = 280,
-    C_BRACKETS = 281,
-    O_BRACES = 282,
-    C_BRACES = 283,
-    SEMICOLON = 284,
-    COMMA = 285,
-    ID = 286,
-    TRUE_ = 287,
-    FALSE_ = 288,
-    RETURN = 289,
-    SKIP = 290,
-    STOP = 291,
-    PERCENT = 292,
-    EQUAL = 293,
-    NOT_EQUAL = 294,
-    GREATER = 295,
-    GREATER_EQUAL = 296,
-    LESS = 297,
-    LESS_EQUAL = 298,
-    OR = 299,
-    AND = 300,
-    NOT = 301,
-    ATR = 302,
-    P_EQUAL = 303,
-    M_EQUAL = 304,
-    T_EQUAL = 305,
-    D_EQUAL = 306,
-    R_EQUAL = 307,
-    ENDOFFILE = 308
+    ADD_EQUAL = 258,
+    SUB_EQUAL = 259,
+    MUL_EQUAL = 260,
+    DIV_EQUAL = 261,
+    RES_EQUAL = 262,
+    OR = 263,
+    AND = 264,
+    EQUAL = 265,
+    NOT_EQUAL = 266,
+    LESS_EQUAL = 267,
+    GREATER_EQUAL = 268,
+    NEG = 269,
+    NUMBER = 270,
+    WHILE = 271,
+    VAR = 272,
+    DEF = 273,
+    INT = 274,
+    BOOL = 275,
+    FOR = 276,
+    IF = 277,
+    ELSE = 279,
+    WRITE = 280,
+    READ = 281,
+    STRING_TYPE = 282,
+    STRING = 283,
+    ID = 284,
+    TRUE = 285,
+    FALSE = 286,
+    RETURN = 287,
+    SKIP = 288,
+    STOP = 289,
+    ENDOFFILE = 290
   };
 #endif
+/* Tokens.  */
+#define ADD_EQUAL 258
+#define SUB_EQUAL 259
+#define MUL_EQUAL 260
+#define DIV_EQUAL 261
+#define RES_EQUAL 262
+#define OR 263
+#define AND 264
+#define EQUAL 265
+#define NOT_EQUAL 266
+#define LESS_EQUAL 267
+#define GREATER_EQUAL 268
+#define NEG 269
+#define NUMBER 270
+#define WHILE 271
+#define VAR 272
+#define DEF 273
+#define INT 274
+#define BOOL 275
+#define FOR 276
+#define IF 277
+#define ELSE 279
+#define WRITE 280
+#define READ 281
+#define STRING_TYPE 282
+#define STRING 283
+#define ID 284
+#define TRUE 285
+#define FALSE 286
+#define RETURN 287
+#define SKIP 288
+#define STOP 289
+#define ENDOFFILE 290
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 19 "a_sintatico.y" /* yacc.c:1909  */
+#line 24 "comp.yacc" /* yacc.c:1909  */
 
-	char *s;
+	char *sval;
+      int   ival;
+      list<int*> *stmts;
 
-#line 112 "a_sintatico.tab.h" /* yacc.c:1909  */
+#line 135 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -116,9 +139,23 @@ typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
+
 
 extern YYSTYPE yylval;
-
+extern YYLTYPE yylloc;
 int yyparse (void);
 
-#endif /* !YY_YY_A_SINTATICO_TAB_H_INCLUDED  */
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */

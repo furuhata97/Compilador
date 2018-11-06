@@ -1,8 +1,24 @@
-a_sintatico.tab.c a_sintatico.tab.h: a_sintatico.y
-	bison -d a_sintatico.y
+CCC = g++
+CCFLAGS= -O2
+LEX = flex
+LFLAGS= -8     
+YACC= bison 
+YFLAGS= -d -t -y
 
-lex.yy.c: a_lexico.l a_sintatico.tab.h
-	flex a_lexico.l
+RM = /bin/rm -f
 
-run: lex.yy.c a_sintatico.tab.c a_sintatico.tab.h
-	g++ a_sintatico.tab.c lex.yy.c -lfl -o executavel
+comp: y.tab.o lex.yy.o comp.o
+	${CCC} ${CCFLAGS} lex.yy.o y.tab.o comp.o -o comp -lfl
+
+comp.o: comp.cpp comp.h
+	${CCC} -c comp.cpp
+y.tab.o: comp.yacc
+	${YACC} ${YFLAGS} comp.yacc
+	${CCC} ${CCFLAGS} y.tab.c -c 
+
+lex.yy.o: comp.lex
+	${LEX} $(LFLAGS) comp.lex
+	${CCC} ${CCFLAGS} lex.yy.c -c 
+
+clean:
+	/bin/rm -f lex.yy.* y.tab.* *.o comp
