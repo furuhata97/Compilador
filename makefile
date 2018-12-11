@@ -1,24 +1,24 @@
-CCC = g++
-CCFLAGS= -O2
-LEX = flex
-LFLAGS= -8     
-YACC= bison 
-YFLAGS= -d -t -y
 
-RM = /bin/rm -f
+all: parser
 
-comp: y.tab.o lex.yy.o comp.o
-	${CCC} ${CCFLAGS} lex.yy.o y.tab.o comp.o -o comp -lfl
+OBJS = parser.o  \
+       lexer.o  \
 
-comp.o: comp.cpp comp.h
-	${CCC} -c comp.cpp
-y.tab.o: comp.yacc
-	${YACC} ${YFLAGS} comp.yacc
-	${CCC} ${CCFLAGS} y.tab.c -c 
-
-lex.yy.o: comp.lex
-	${LEX} $(LFLAGS) comp.lex
-	${CCC} ${CCFLAGS} lex.yy.c -c 
 
 clean:
-	/bin/rm -f lex.yy.* y.tab.* *.o comp
+	$(RM) -rf parser.cpp parser.hpp parser lexer.cpp $(OBJS)
+
+parser.cpp: parser.y
+	bison -d -v -o $@ $^
+	
+parser.hpp: parser.cpp
+
+lexer.cpp: lexer.l parser.hpp
+	flex -o $@ $^
+
+%.o: %.cpp
+	g++ -c -o $@ $<
+
+
+parser: $(OBJS)
+	g++ -o $@ $(OBJS)

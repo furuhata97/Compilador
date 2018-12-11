@@ -1,0 +1,3775 @@
+Terminals unused in grammar
+
+   ENDOFFILE
+   T_INV
+
+
+Grammar
+
+    0 $accept: programa $end
+
+    1 programa: listaDec
+
+    2 listaDec: dec
+    3         | listaDec dec
+
+    4 dec: decVar
+    5    | decSub
+    6    | error
+
+    7 decVar: VAR listaSpecVars ':' type ';'
+    8       | error ';'
+    9       | VAR listaSpecVars ':' error ';'
+
+   10 decSub: decProc
+   11       | decFunc
+
+   12 listaSpecVars: specVar
+   13              | listaSpecVars ',' specVar
+   14              | listaSpecVars specVar
+
+   15 specVar: specVarSimples
+   16        | specVarSimplesIni
+   17        | specVarArranjo
+   18        | specVarArranjoIni
+
+   19 specVarSimples: ID
+   20               | error
+
+   21 specVarSimplesIni: ID '=' Exp
+   22                  | ID '=' error
+   23                  | error '=' Exp
+
+   24 specVarArranjo: ID '[' NUMBER ']'
+   25               | ID '[' error ']'
+   26               | error '[' NUMBER ']'
+
+   27 specVarArranjoIni: ID '[' NUMBER ']' '=' '{' listaExp '}'
+   28                  | ID '[' error ']' '=' '{' listaExp '}'
+   29                  | error '[' NUMBER ']' '=' '{' listaExp '}'
+   30                  | ID '[' NUMBER ']' '=' '{' error '}'
+
+   31 listaExp: Exp
+   32         | listaExp ',' Exp
+
+   33 variavel: ID
+   34         | ID '[' Exp ']'
+
+   35 Exp: variavel
+   36    | NUMBER
+   37    | TRUE
+   38    | FALSE
+   39    | STRING
+   40    | Exp '+' Exp
+   41    | Exp '-' Exp
+   42    | Exp '*' Exp
+   43    | Exp '/' Exp
+   44    | Exp '%' Exp
+   45    | '-' Exp
+   46    | '!' Exp
+   47    | '(' Exp ')'
+   48    | Exp '?' Exp ':' Exp
+   49    | Exp '<' Exp
+   50    | Exp "<=" Exp
+   51    | Exp '>' Exp
+   52    | Exp ">=" Exp
+   53    | Exp "==" Exp
+   54    | Exp "!=" Exp
+   55    | Exp "&&" Exp
+   56    | Exp "||" Exp
+   57    | cmdChamadaFunc
+
+   58 decProc: DEF ID '(' ')' bloco
+   59        | DEF ID '(' listaParam ')' bloco
+   60        | DEF ID '(' error ')' bloco
+
+   61 decFunc: DEF ID '(' ')' ':' type bloco
+   62        | DEF ID '(' listaParam ')' ':' type bloco
+   63        | DEF ID '(' error ')' type bloco
+
+   64 listaParam: specParams
+   65           | listaParam ';' specParams
+
+   66 specParams: listaParams ':' type
+
+   67 listaParams: param
+   68            | listaParams ',' param
+
+   69 param: ID
+   70      | ID '[' ']'
+
+   71 bloco: '{' listaDec listaCmd '}'
+   72      | '{' listaDec '}'
+   73      | '{' listaCmd '}'
+   74      | '{' '}'
+
+   75 listaCmd: cmd
+   76         | listaCmd cmd
+
+   77 cmd: cmdSimples
+   78    | bloco
+
+   79 cmdSimples: cmdAtrib
+   80           | cmdIf
+   81           | cmdWhile
+   82           | cmdFor
+   83           | cmdStop
+   84           | cmdSkip
+   85           | cmdReturn
+   86           | cmdChamadaProc
+   87           | cmdRead
+   88           | cmdWrite
+
+   89 cmdAtrib: atrib ';'
+
+   90 atrib: variavel '=' Exp
+   91      | variavel "+=" Exp
+   92      | variavel "-=" Exp
+   93      | variavel "*=" Exp
+   94      | variavel "/=" Exp
+   95      | variavel "%=" Exp
+
+   96 cmdIf: IF '(' Exp ')' cmd
+   97      | IF '(' Exp ')' cmd ELSE cmd
+   98      | IF '(' error ')' cmd
+   99      | IF '(' error ')' cmd ELSE cmd
+
+  100 cmdWhile: WHILE '(' Exp ')' cmd
+  101         | WHILE '(' error ')' cmd
+
+  102 cmdFor: FOR '(' atrib ';' Exp ';' atrib ')' cmd
+  103       | FOR '(' error ')' cmd
+
+  104 cmdStop: STOP ';'
+
+  105 cmdSkip: SKIP ';'
+
+  106 cmdReturn: RETURN ';'
+  107          | RETURN Exp ';'
+
+  108 cmdChamadaProc: ID '(' ')' ';'
+  109               | ID '(' listaExp ')' ';'
+
+  110 cmdChamadaFunc: ID '(' ')'
+  111               | ID '(' listaExp ')'
+
+  112 cmdRead: READ variavel ';'
+
+  113 cmdWrite: WRITE listaExp ';'
+
+  114 type: INT
+  115     | STRING_TYPE
+  116     | BOOL
+  117     | STRING_TYPE '[' NUMBER ']'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 46
+'%' (37) 44
+'(' (40) 47 58 59 60 61 62 63 96 97 98 99 100 101 102 103 108 109 110
+    111
+')' (41) 47 58 59 60 61 62 63 96 97 98 99 100 101 102 103 108 109 110
+    111
+'*' (42) 42
+'+' (43) 40
+',' (44) 13 32 68
+'-' (45) 41 45
+'/' (47) 43
+':' (58) 7 9 48 61 62 66
+';' (59) 7 8 9 65 89 102 104 105 106 107 108 109 112 113
+'<' (60) 49
+'=' (61) 21 22 23 27 28 29 30 90
+'>' (62) 51
+'?' (63) 48
+'[' (91) 24 25 26 27 28 29 30 34 70 117
+']' (93) 24 25 26 27 28 29 30 34 70 117
+'{' (123) 27 28 29 30 71 72 73 74
+'}' (125) 27 28 29 30 71 72 73 74
+error (256) 6 8 9 20 22 23 25 26 28 29 30 60 63 98 99 101 103
+"+=" (258) 91
+"-=" (259) 92
+"*=" (260) 93
+"/=" (261) 94
+"%=" (262) 95
+"||" (263) 56
+"&&" (264) 55
+"==" (265) 53
+"!=" (266) 54
+"<=" (267) 50
+">=" (268) 52
+NEG (269)
+NUMBER (270) 24 26 27 29 30 36 117
+WHILE (271) 100 101
+VAR (272) 7 9
+DEF (273) 58 59 60 61 62 63
+INT (274) 114
+BOOL (275) 116
+FOR (276) 102 103
+IF (277) 96 97 98 99
+"then" (278)
+ELSE (279) 97 99
+WRITE (280) 113
+READ (281) 112
+STRING_TYPE (282) 115 117
+STRING (283) 39
+ID (284) 19 21 22 24 25 27 28 30 33 34 58 59 60 61 62 63 69 70 108
+    109 110 111
+TRUE (285) 37
+FALSE (286) 38
+RETURN (287) 106 107
+SKIP (288) 105
+STOP (289) 104
+ENDOFFILE (290)
+T_INV (291)
+
+
+Nonterminals, with rules where they appear
+
+$accept (56)
+    on left: 0
+programa (57)
+    on left: 1, on right: 0
+listaDec (58)
+    on left: 2 3, on right: 1 3 71 72
+dec (59)
+    on left: 4 5 6, on right: 2 3
+decVar (60)
+    on left: 7 8 9, on right: 4
+decSub (61)
+    on left: 10 11, on right: 5
+listaSpecVars (62)
+    on left: 12 13 14, on right: 7 9 13 14
+specVar (63)
+    on left: 15 16 17 18, on right: 12 13 14
+specVarSimples (64)
+    on left: 19 20, on right: 15
+specVarSimplesIni (65)
+    on left: 21 22 23, on right: 16
+specVarArranjo (66)
+    on left: 24 25 26, on right: 17
+specVarArranjoIni (67)
+    on left: 27 28 29 30, on right: 18
+listaExp (68)
+    on left: 31 32, on right: 27 28 29 32 109 111 113
+variavel (69)
+    on left: 33 34, on right: 35 90 91 92 93 94 95 112
+Exp (70)
+    on left: 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52
+    53 54 55 56 57, on right: 21 23 31 32 34 40 41 42 43 44 45 46 47
+    48 49 50 51 52 53 54 55 56 90 91 92 93 94 95 96 97 100 102 107
+decProc (71)
+    on left: 58 59 60, on right: 10
+decFunc (72)
+    on left: 61 62 63, on right: 11
+listaParam (73)
+    on left: 64 65, on right: 59 62 65
+specParams (74)
+    on left: 66, on right: 64 65
+listaParams (75)
+    on left: 67 68, on right: 66 68
+param (76)
+    on left: 69 70, on right: 67 68
+bloco (77)
+    on left: 71 72 73 74, on right: 58 59 60 61 62 63 78
+listaCmd (78)
+    on left: 75 76, on right: 71 73 76
+cmd (79)
+    on left: 77 78, on right: 75 76 96 97 98 99 100 101 102 103
+cmdSimples (80)
+    on left: 79 80 81 82 83 84 85 86 87 88, on right: 77
+cmdAtrib (81)
+    on left: 89, on right: 79
+atrib (82)
+    on left: 90 91 92 93 94 95, on right: 89 102
+cmdIf (83)
+    on left: 96 97 98 99, on right: 80
+cmdWhile (84)
+    on left: 100 101, on right: 81
+cmdFor (85)
+    on left: 102 103, on right: 82
+cmdStop (86)
+    on left: 104, on right: 83
+cmdSkip (87)
+    on left: 105, on right: 84
+cmdReturn (88)
+    on left: 106 107, on right: 85
+cmdChamadaProc (89)
+    on left: 108 109, on right: 86
+cmdChamadaFunc (90)
+    on left: 110 111, on right: 57
+cmdRead (91)
+    on left: 112, on right: 87
+cmdWrite (92)
+    on left: 113, on right: 88
+type (93)
+    on left: 114 115 116 117, on right: 7 61 62 63 66
+
+
+State 0
+
+    0 $accept: . programa $end
+
+    error  shift, and go to state 1
+    VAR    shift, and go to state 2
+    DEF    shift, and go to state 3
+
+    programa  go to state 4
+    listaDec  go to state 5
+    dec       go to state 6
+    decVar    go to state 7
+    decSub    go to state 8
+    decProc   go to state 9
+    decFunc   go to state 10
+
+
+State 1
+
+    6 dec: error .
+    8 decVar: error . ';'
+
+    ';'  shift, and go to state 11
+
+    $default  reduce using rule 6 (dec)
+
+
+State 2
+
+    7 decVar: VAR . listaSpecVars ':' type ';'
+    9       | VAR . listaSpecVars ':' error ';'
+
+    error  shift, and go to state 12
+    ID     shift, and go to state 13
+
+    listaSpecVars      go to state 14
+    specVar            go to state 15
+    specVarSimples     go to state 16
+    specVarSimplesIni  go to state 17
+    specVarArranjo     go to state 18
+    specVarArranjoIni  go to state 19
+
+
+State 3
+
+   58 decProc: DEF . ID '(' ')' bloco
+   59        | DEF . ID '(' listaParam ')' bloco
+   60        | DEF . ID '(' error ')' bloco
+   61 decFunc: DEF . ID '(' ')' ':' type bloco
+   62        | DEF . ID '(' listaParam ')' ':' type bloco
+   63        | DEF . ID '(' error ')' type bloco
+
+    ID  shift, and go to state 20
+
+
+State 4
+
+    0 $accept: programa . $end
+
+    $end  shift, and go to state 21
+
+
+State 5
+
+    1 programa: listaDec .
+    3 listaDec: listaDec . dec
+
+    error  shift, and go to state 1
+    VAR    shift, and go to state 2
+    DEF    shift, and go to state 3
+
+    $end  reduce using rule 1 (programa)
+
+    dec      go to state 22
+    decVar   go to state 7
+    decSub   go to state 8
+    decProc  go to state 9
+    decFunc  go to state 10
+
+
+State 6
+
+    2 listaDec: dec .
+
+    $default  reduce using rule 2 (listaDec)
+
+
+State 7
+
+    4 dec: decVar .
+
+    $default  reduce using rule 4 (dec)
+
+
+State 8
+
+    5 dec: decSub .
+
+    $default  reduce using rule 5 (dec)
+
+
+State 9
+
+   10 decSub: decProc .
+
+    $default  reduce using rule 10 (decSub)
+
+
+State 10
+
+   11 decSub: decFunc .
+
+    $default  reduce using rule 11 (decSub)
+
+
+State 11
+
+    8 decVar: error ';' .
+
+    $default  reduce using rule 8 (decVar)
+
+
+State 12
+
+   20 specVarSimples: error .
+   23 specVarSimplesIni: error . '=' Exp
+   26 specVarArranjo: error . '[' NUMBER ']'
+   29 specVarArranjoIni: error . '[' NUMBER ']' '=' '{' listaExp '}'
+
+    '['  shift, and go to state 23
+    '='  shift, and go to state 24
+
+    $default  reduce using rule 20 (specVarSimples)
+
+
+State 13
+
+   19 specVarSimples: ID .
+   21 specVarSimplesIni: ID . '=' Exp
+   22                  | ID . '=' error
+   24 specVarArranjo: ID . '[' NUMBER ']'
+   25               | ID . '[' error ']'
+   27 specVarArranjoIni: ID . '[' NUMBER ']' '=' '{' listaExp '}'
+   28                  | ID . '[' error ']' '=' '{' listaExp '}'
+   30                  | ID . '[' NUMBER ']' '=' '{' error '}'
+
+    '['  shift, and go to state 25
+    '='  shift, and go to state 26
+
+    $default  reduce using rule 19 (specVarSimples)
+
+
+State 14
+
+    7 decVar: VAR listaSpecVars . ':' type ';'
+    9       | VAR listaSpecVars . ':' error ';'
+   13 listaSpecVars: listaSpecVars . ',' specVar
+   14              | listaSpecVars . specVar
+
+    error  shift, and go to state 12
+    ','    shift, and go to state 27
+    ':'    shift, and go to state 28
+    ID     shift, and go to state 13
+
+    specVar            go to state 29
+    specVarSimples     go to state 16
+    specVarSimplesIni  go to state 17
+    specVarArranjo     go to state 18
+    specVarArranjoIni  go to state 19
+
+
+State 15
+
+   12 listaSpecVars: specVar .
+
+    $default  reduce using rule 12 (listaSpecVars)
+
+
+State 16
+
+   15 specVar: specVarSimples .
+
+    $default  reduce using rule 15 (specVar)
+
+
+State 17
+
+   16 specVar: specVarSimplesIni .
+
+    $default  reduce using rule 16 (specVar)
+
+
+State 18
+
+   17 specVar: specVarArranjo .
+
+    $default  reduce using rule 17 (specVar)
+
+
+State 19
+
+   18 specVar: specVarArranjoIni .
+
+    $default  reduce using rule 18 (specVar)
+
+
+State 20
+
+   58 decProc: DEF ID . '(' ')' bloco
+   59        | DEF ID . '(' listaParam ')' bloco
+   60        | DEF ID . '(' error ')' bloco
+   61 decFunc: DEF ID . '(' ')' ':' type bloco
+   62        | DEF ID . '(' listaParam ')' ':' type bloco
+   63        | DEF ID . '(' error ')' type bloco
+
+    '('  shift, and go to state 30
+
+
+State 21
+
+    0 $accept: programa $end .
+
+    $default  accept
+
+
+State 22
+
+    3 listaDec: listaDec dec .
+
+    $default  reduce using rule 3 (listaDec)
+
+
+State 23
+
+   26 specVarArranjo: error '[' . NUMBER ']'
+   29 specVarArranjoIni: error '[' . NUMBER ']' '=' '{' listaExp '}'
+
+    NUMBER  shift, and go to state 31
+
+
+State 24
+
+   23 specVarSimplesIni: error '=' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 41
+    cmdChamadaFunc  go to state 42
+
+
+State 25
+
+   24 specVarArranjo: ID '[' . NUMBER ']'
+   25               | ID '[' . error ']'
+   27 specVarArranjoIni: ID '[' . NUMBER ']' '=' '{' listaExp '}'
+   28                  | ID '[' . error ']' '=' '{' listaExp '}'
+   30                  | ID '[' . NUMBER ']' '=' '{' error '}'
+
+    error   shift, and go to state 43
+    NUMBER  shift, and go to state 44
+
+
+State 26
+
+   21 specVarSimplesIni: ID '=' . Exp
+   22                  | ID '=' . error
+
+    error   shift, and go to state 45
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 46
+    cmdChamadaFunc  go to state 42
+
+
+State 27
+
+   13 listaSpecVars: listaSpecVars ',' . specVar
+
+    error  shift, and go to state 12
+    ID     shift, and go to state 13
+
+    specVar            go to state 47
+    specVarSimples     go to state 16
+    specVarSimplesIni  go to state 17
+    specVarArranjo     go to state 18
+    specVarArranjoIni  go to state 19
+
+
+State 28
+
+    7 decVar: VAR listaSpecVars ':' . type ';'
+    9       | VAR listaSpecVars ':' . error ';'
+
+    error        shift, and go to state 48
+    INT          shift, and go to state 49
+    BOOL         shift, and go to state 50
+    STRING_TYPE  shift, and go to state 51
+
+    type  go to state 52
+
+
+State 29
+
+   14 listaSpecVars: listaSpecVars specVar .
+
+    $default  reduce using rule 14 (listaSpecVars)
+
+
+State 30
+
+   58 decProc: DEF ID '(' . ')' bloco
+   59        | DEF ID '(' . listaParam ')' bloco
+   60        | DEF ID '(' . error ')' bloco
+   61 decFunc: DEF ID '(' . ')' ':' type bloco
+   62        | DEF ID '(' . listaParam ')' ':' type bloco
+   63        | DEF ID '(' . error ')' type bloco
+
+    error  shift, and go to state 53
+    ')'    shift, and go to state 54
+    ID     shift, and go to state 55
+
+    listaParam   go to state 56
+    specParams   go to state 57
+    listaParams  go to state 58
+    param        go to state 59
+
+
+State 31
+
+   26 specVarArranjo: error '[' NUMBER . ']'
+   29 specVarArranjoIni: error '[' NUMBER . ']' '=' '{' listaExp '}'
+
+    ']'  shift, and go to state 60
+
+
+State 32
+
+   47 Exp: '(' . Exp ')'
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 61
+    cmdChamadaFunc  go to state 42
+
+
+State 33
+
+   45 Exp: '-' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 62
+    cmdChamadaFunc  go to state 42
+
+
+State 34
+
+   46 Exp: '!' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 63
+    cmdChamadaFunc  go to state 42
+
+
+State 35
+
+   36 Exp: NUMBER .
+
+    $default  reduce using rule 36 (Exp)
+
+
+State 36
+
+   39 Exp: STRING .
+
+    $default  reduce using rule 39 (Exp)
+
+
+State 37
+
+   33 variavel: ID .
+   34         | ID . '[' Exp ']'
+  110 cmdChamadaFunc: ID . '(' ')'
+  111               | ID . '(' listaExp ')'
+
+    '('  shift, and go to state 64
+    '['  shift, and go to state 65
+
+    $default  reduce using rule 33 (variavel)
+
+
+State 38
+
+   37 Exp: TRUE .
+
+    $default  reduce using rule 37 (Exp)
+
+
+State 39
+
+   38 Exp: FALSE .
+
+    $default  reduce using rule 38 (Exp)
+
+
+State 40
+
+   35 Exp: variavel .
+
+    $default  reduce using rule 35 (Exp)
+
+
+State 41
+
+   23 specVarSimplesIni: error '=' Exp .
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 23 (specVarSimplesIni)
+
+
+State 42
+
+   57 Exp: cmdChamadaFunc .
+
+    $default  reduce using rule 57 (Exp)
+
+
+State 43
+
+   25 specVarArranjo: ID '[' error . ']'
+   28 specVarArranjoIni: ID '[' error . ']' '=' '{' listaExp '}'
+
+    ']'  shift, and go to state 80
+
+
+State 44
+
+   24 specVarArranjo: ID '[' NUMBER . ']'
+   27 specVarArranjoIni: ID '[' NUMBER . ']' '=' '{' listaExp '}'
+   30                  | ID '[' NUMBER . ']' '=' '{' error '}'
+
+    ']'  shift, and go to state 81
+
+
+State 45
+
+   22 specVarSimplesIni: ID '=' error .
+
+    $default  reduce using rule 22 (specVarSimplesIni)
+
+
+State 46
+
+   21 specVarSimplesIni: ID '=' Exp .
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 21 (specVarSimplesIni)
+
+
+State 47
+
+   13 listaSpecVars: listaSpecVars ',' specVar .
+
+    $default  reduce using rule 13 (listaSpecVars)
+
+
+State 48
+
+    9 decVar: VAR listaSpecVars ':' error . ';'
+
+    ';'  shift, and go to state 82
+
+
+State 49
+
+  114 type: INT .
+
+    $default  reduce using rule 114 (type)
+
+
+State 50
+
+  116 type: BOOL .
+
+    $default  reduce using rule 116 (type)
+
+
+State 51
+
+  115 type: STRING_TYPE .
+  117     | STRING_TYPE . '[' NUMBER ']'
+
+    '['  shift, and go to state 83
+
+    $default  reduce using rule 115 (type)
+
+
+State 52
+
+    7 decVar: VAR listaSpecVars ':' type . ';'
+
+    ';'  shift, and go to state 84
+
+
+State 53
+
+   60 decProc: DEF ID '(' error . ')' bloco
+   63 decFunc: DEF ID '(' error . ')' type bloco
+
+    ')'  shift, and go to state 85
+
+
+State 54
+
+   58 decProc: DEF ID '(' ')' . bloco
+   61 decFunc: DEF ID '(' ')' . ':' type bloco
+
+    '{'  shift, and go to state 86
+    ':'  shift, and go to state 87
+
+    bloco  go to state 88
+
+
+State 55
+
+   69 param: ID .
+   70      | ID . '[' ']'
+
+    '['  shift, and go to state 89
+
+    $default  reduce using rule 69 (param)
+
+
+State 56
+
+   59 decProc: DEF ID '(' listaParam . ')' bloco
+   62 decFunc: DEF ID '(' listaParam . ')' ':' type bloco
+   65 listaParam: listaParam . ';' specParams
+
+    ')'  shift, and go to state 90
+    ';'  shift, and go to state 91
+
+
+State 57
+
+   64 listaParam: specParams .
+
+    $default  reduce using rule 64 (listaParam)
+
+
+State 58
+
+   66 specParams: listaParams . ':' type
+   68 listaParams: listaParams . ',' param
+
+    ','  shift, and go to state 92
+    ':'  shift, and go to state 93
+
+
+State 59
+
+   67 listaParams: param .
+
+    $default  reduce using rule 67 (listaParams)
+
+
+State 60
+
+   26 specVarArranjo: error '[' NUMBER ']' .
+   29 specVarArranjoIni: error '[' NUMBER ']' . '=' '{' listaExp '}'
+
+    '='  shift, and go to state 94
+
+    $default  reduce using rule 26 (specVarArranjo)
+
+
+State 61
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   47    | '(' Exp . ')'
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    ')'   shift, and go to state 95
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 62
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   45    | '-' Exp .
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    $default  reduce using rule 45 (Exp)
+
+
+State 63
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   46    | '!' Exp .
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    $default  reduce using rule 46 (Exp)
+
+
+State 64
+
+  110 cmdChamadaFunc: ID '(' . ')'
+  111               | ID '(' . listaExp ')'
+
+    '('     shift, and go to state 32
+    ')'     shift, and go to state 96
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    listaExp        go to state 97
+    variavel        go to state 40
+    Exp             go to state 98
+    cmdChamadaFunc  go to state 42
+
+
+State 65
+
+   34 variavel: ID '[' . Exp ']'
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 99
+    cmdChamadaFunc  go to state 42
+
+
+State 66
+
+   48 Exp: Exp '?' . Exp ':' Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 100
+    cmdChamadaFunc  go to state 42
+
+
+State 67
+
+   56 Exp: Exp "||" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 101
+    cmdChamadaFunc  go to state 42
+
+
+State 68
+
+   55 Exp: Exp "&&" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 102
+    cmdChamadaFunc  go to state 42
+
+
+State 69
+
+   53 Exp: Exp "==" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 103
+    cmdChamadaFunc  go to state 42
+
+
+State 70
+
+   54 Exp: Exp "!=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 104
+    cmdChamadaFunc  go to state 42
+
+
+State 71
+
+   49 Exp: Exp '<' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 105
+    cmdChamadaFunc  go to state 42
+
+
+State 72
+
+   50 Exp: Exp "<=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 106
+    cmdChamadaFunc  go to state 42
+
+
+State 73
+
+   51 Exp: Exp '>' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 107
+    cmdChamadaFunc  go to state 42
+
+
+State 74
+
+   52 Exp: Exp ">=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 108
+    cmdChamadaFunc  go to state 42
+
+
+State 75
+
+   40 Exp: Exp '+' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 109
+    cmdChamadaFunc  go to state 42
+
+
+State 76
+
+   41 Exp: Exp '-' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 110
+    cmdChamadaFunc  go to state 42
+
+
+State 77
+
+   42 Exp: Exp '*' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 111
+    cmdChamadaFunc  go to state 42
+
+
+State 78
+
+   43 Exp: Exp '/' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 112
+    cmdChamadaFunc  go to state 42
+
+
+State 79
+
+   44 Exp: Exp '%' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 113
+    cmdChamadaFunc  go to state 42
+
+
+State 80
+
+   25 specVarArranjo: ID '[' error ']' .
+   28 specVarArranjoIni: ID '[' error ']' . '=' '{' listaExp '}'
+
+    '='  shift, and go to state 114
+
+    $default  reduce using rule 25 (specVarArranjo)
+
+
+State 81
+
+   24 specVarArranjo: ID '[' NUMBER ']' .
+   27 specVarArranjoIni: ID '[' NUMBER ']' . '=' '{' listaExp '}'
+   30                  | ID '[' NUMBER ']' . '=' '{' error '}'
+
+    '='  shift, and go to state 115
+
+    $default  reduce using rule 24 (specVarArranjo)
+
+
+State 82
+
+    9 decVar: VAR listaSpecVars ':' error ';' .
+
+    $default  reduce using rule 9 (decVar)
+
+
+State 83
+
+  117 type: STRING_TYPE '[' . NUMBER ']'
+
+    NUMBER  shift, and go to state 116
+
+
+State 84
+
+    7 decVar: VAR listaSpecVars ':' type ';' .
+
+    $default  reduce using rule 7 (decVar)
+
+
+State 85
+
+   60 decProc: DEF ID '(' error ')' . bloco
+   63 decFunc: DEF ID '(' error ')' . type bloco
+
+    '{'          shift, and go to state 86
+    INT          shift, and go to state 49
+    BOOL         shift, and go to state 50
+    STRING_TYPE  shift, and go to state 51
+
+    bloco  go to state 117
+    type   go to state 118
+
+
+State 86
+
+   71 bloco: '{' . listaDec listaCmd '}'
+   72      | '{' . listaDec '}'
+   73      | '{' . listaCmd '}'
+   74      | '{' . '}'
+
+    error   shift, and go to state 1
+    '{'     shift, and go to state 86
+    '}'     shift, and go to state 119
+    WHILE   shift, and go to state 120
+    VAR     shift, and go to state 2
+    DEF     shift, and go to state 3
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    listaDec        go to state 129
+    dec             go to state 6
+    decVar          go to state 7
+    decSub          go to state 8
+    variavel        go to state 130
+    decProc         go to state 9
+    decFunc         go to state 10
+    bloco           go to state 131
+    listaCmd        go to state 132
+    cmd             go to state 133
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 87
+
+   61 decFunc: DEF ID '(' ')' ':' . type bloco
+
+    INT          shift, and go to state 49
+    BOOL         shift, and go to state 50
+    STRING_TYPE  shift, and go to state 51
+
+    type  go to state 146
+
+
+State 88
+
+   58 decProc: DEF ID '(' ')' bloco .
+
+    $default  reduce using rule 58 (decProc)
+
+
+State 89
+
+   70 param: ID '[' . ']'
+
+    ']'  shift, and go to state 147
+
+
+State 90
+
+   59 decProc: DEF ID '(' listaParam ')' . bloco
+   62 decFunc: DEF ID '(' listaParam ')' . ':' type bloco
+
+    '{'  shift, and go to state 86
+    ':'  shift, and go to state 148
+
+    bloco  go to state 149
+
+
+State 91
+
+   65 listaParam: listaParam ';' . specParams
+
+    ID  shift, and go to state 55
+
+    specParams   go to state 150
+    listaParams  go to state 58
+    param        go to state 59
+
+
+State 92
+
+   68 listaParams: listaParams ',' . param
+
+    ID  shift, and go to state 55
+
+    param  go to state 151
+
+
+State 93
+
+   66 specParams: listaParams ':' . type
+
+    INT          shift, and go to state 49
+    BOOL         shift, and go to state 50
+    STRING_TYPE  shift, and go to state 51
+
+    type  go to state 152
+
+
+State 94
+
+   29 specVarArranjoIni: error '[' NUMBER ']' '=' . '{' listaExp '}'
+
+    '{'  shift, and go to state 153
+
+
+State 95
+
+   47 Exp: '(' Exp ')' .
+
+    $default  reduce using rule 47 (Exp)
+
+
+State 96
+
+  110 cmdChamadaFunc: ID '(' ')' .
+
+    $default  reduce using rule 110 (cmdChamadaFunc)
+
+
+State 97
+
+   32 listaExp: listaExp . ',' Exp
+  111 cmdChamadaFunc: ID '(' listaExp . ')'
+
+    ')'  shift, and go to state 154
+    ','  shift, and go to state 155
+
+
+State 98
+
+   31 listaExp: Exp .
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 31 (listaExp)
+
+
+State 99
+
+   34 variavel: ID '[' Exp . ']'
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    ']'   shift, and go to state 156
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 100
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   48    | Exp '?' Exp . ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '?'   shift, and go to state 66
+    ':'   shift, and go to state 157
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 101
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   56    | Exp "||" Exp .
+
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 56 (Exp)
+
+
+State 102
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   55    | Exp "&&" Exp .
+   56    | Exp . "||" Exp
+
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 55 (Exp)
+
+
+State 103
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   53    | Exp "==" Exp .
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 53 (Exp)
+
+
+State 104
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   54    | Exp "!=" Exp .
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 54 (Exp)
+
+
+State 105
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   49    | Exp '<' Exp .
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '+'  shift, and go to state 75
+    '-'  shift, and go to state 76
+    '*'  shift, and go to state 77
+    '/'  shift, and go to state 78
+    '%'  shift, and go to state 79
+
+    $default  reduce using rule 49 (Exp)
+
+
+State 106
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   50    | Exp "<=" Exp .
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '+'  shift, and go to state 75
+    '-'  shift, and go to state 76
+    '*'  shift, and go to state 77
+    '/'  shift, and go to state 78
+    '%'  shift, and go to state 79
+
+    $default  reduce using rule 50 (Exp)
+
+
+State 107
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   51    | Exp '>' Exp .
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '+'  shift, and go to state 75
+    '-'  shift, and go to state 76
+    '*'  shift, and go to state 77
+    '/'  shift, and go to state 78
+    '%'  shift, and go to state 79
+
+    $default  reduce using rule 51 (Exp)
+
+
+State 108
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   52    | Exp ">=" Exp .
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '+'  shift, and go to state 75
+    '-'  shift, and go to state 76
+    '*'  shift, and go to state 77
+    '/'  shift, and go to state 78
+    '%'  shift, and go to state 79
+
+    $default  reduce using rule 52 (Exp)
+
+
+State 109
+
+   40 Exp: Exp . '+' Exp
+   40    | Exp '+' Exp .
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '*'  shift, and go to state 77
+    '/'  shift, and go to state 78
+    '%'  shift, and go to state 79
+
+    $default  reduce using rule 40 (Exp)
+
+
+State 110
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   41    | Exp '-' Exp .
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '*'  shift, and go to state 77
+    '/'  shift, and go to state 78
+    '%'  shift, and go to state 79
+
+    $default  reduce using rule 41 (Exp)
+
+
+State 111
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   42    | Exp '*' Exp .
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    $default  reduce using rule 42 (Exp)
+
+
+State 112
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   43    | Exp '/' Exp .
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    $default  reduce using rule 43 (Exp)
+
+
+State 113
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   44    | Exp '%' Exp .
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    $default  reduce using rule 44 (Exp)
+
+
+State 114
+
+   28 specVarArranjoIni: ID '[' error ']' '=' . '{' listaExp '}'
+
+    '{'  shift, and go to state 158
+
+
+State 115
+
+   27 specVarArranjoIni: ID '[' NUMBER ']' '=' . '{' listaExp '}'
+   30                  | ID '[' NUMBER ']' '=' . '{' error '}'
+
+    '{'  shift, and go to state 159
+
+
+State 116
+
+  117 type: STRING_TYPE '[' NUMBER . ']'
+
+    ']'  shift, and go to state 160
+
+
+State 117
+
+   60 decProc: DEF ID '(' error ')' bloco .
+
+    $default  reduce using rule 60 (decProc)
+
+
+State 118
+
+   63 decFunc: DEF ID '(' error ')' type . bloco
+
+    '{'  shift, and go to state 86
+
+    bloco  go to state 161
+
+
+State 119
+
+   74 bloco: '{' '}' .
+
+    $default  reduce using rule 74 (bloco)
+
+
+State 120
+
+  100 cmdWhile: WHILE . '(' Exp ')' cmd
+  101         | WHILE . '(' error ')' cmd
+
+    '('  shift, and go to state 162
+
+
+State 121
+
+  102 cmdFor: FOR . '(' atrib ';' Exp ';' atrib ')' cmd
+  103       | FOR . '(' error ')' cmd
+
+    '('  shift, and go to state 163
+
+
+State 122
+
+   96 cmdIf: IF . '(' Exp ')' cmd
+   97      | IF . '(' Exp ')' cmd ELSE cmd
+   98      | IF . '(' error ')' cmd
+   99      | IF . '(' error ')' cmd ELSE cmd
+
+    '('  shift, and go to state 164
+
+
+State 123
+
+  113 cmdWrite: WRITE . listaExp ';'
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    listaExp        go to state 165
+    variavel        go to state 40
+    Exp             go to state 98
+    cmdChamadaFunc  go to state 42
+
+
+State 124
+
+  112 cmdRead: READ . variavel ';'
+
+    ID  shift, and go to state 166
+
+    variavel  go to state 167
+
+
+State 125
+
+   33 variavel: ID .
+   34         | ID . '[' Exp ']'
+  108 cmdChamadaProc: ID . '(' ')' ';'
+  109               | ID . '(' listaExp ')' ';'
+
+    '('  shift, and go to state 168
+    '['  shift, and go to state 65
+
+    $default  reduce using rule 33 (variavel)
+
+
+State 126
+
+  106 cmdReturn: RETURN . ';'
+  107          | RETURN . Exp ';'
+
+    '('     shift, and go to state 32
+    ';'     shift, and go to state 169
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 170
+    cmdChamadaFunc  go to state 42
+
+
+State 127
+
+  105 cmdSkip: SKIP . ';'
+
+    ';'  shift, and go to state 171
+
+
+State 128
+
+  104 cmdStop: STOP . ';'
+
+    ';'  shift, and go to state 172
+
+
+State 129
+
+    3 listaDec: listaDec . dec
+   71 bloco: '{' listaDec . listaCmd '}'
+   72      | '{' listaDec . '}'
+
+    error   shift, and go to state 1
+    '{'     shift, and go to state 86
+    '}'     shift, and go to state 173
+    WHILE   shift, and go to state 120
+    VAR     shift, and go to state 2
+    DEF     shift, and go to state 3
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    dec             go to state 22
+    decVar          go to state 7
+    decSub          go to state 8
+    variavel        go to state 130
+    decProc         go to state 9
+    decFunc         go to state 10
+    bloco           go to state 131
+    listaCmd        go to state 174
+    cmd             go to state 133
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 130
+
+   90 atrib: variavel . '=' Exp
+   91      | variavel . "+=" Exp
+   92      | variavel . "-=" Exp
+   93      | variavel . "*=" Exp
+   94      | variavel . "/=" Exp
+   95      | variavel . "%=" Exp
+
+    '='   shift, and go to state 175
+    "+="  shift, and go to state 176
+    "-="  shift, and go to state 177
+    "*="  shift, and go to state 178
+    "/="  shift, and go to state 179
+    "%="  shift, and go to state 180
+
+
+State 131
+
+   78 cmd: bloco .
+
+    $default  reduce using rule 78 (cmd)
+
+
+State 132
+
+   73 bloco: '{' listaCmd . '}'
+   76 listaCmd: listaCmd . cmd
+
+    '{'     shift, and go to state 86
+    '}'     shift, and go to state 181
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 182
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 133
+
+   75 listaCmd: cmd .
+
+    $default  reduce using rule 75 (listaCmd)
+
+
+State 134
+
+   77 cmd: cmdSimples .
+
+    $default  reduce using rule 77 (cmd)
+
+
+State 135
+
+   79 cmdSimples: cmdAtrib .
+
+    $default  reduce using rule 79 (cmdSimples)
+
+
+State 136
+
+   89 cmdAtrib: atrib . ';'
+
+    ';'  shift, and go to state 183
+
+
+State 137
+
+   80 cmdSimples: cmdIf .
+
+    $default  reduce using rule 80 (cmdSimples)
+
+
+State 138
+
+   81 cmdSimples: cmdWhile .
+
+    $default  reduce using rule 81 (cmdSimples)
+
+
+State 139
+
+   82 cmdSimples: cmdFor .
+
+    $default  reduce using rule 82 (cmdSimples)
+
+
+State 140
+
+   83 cmdSimples: cmdStop .
+
+    $default  reduce using rule 83 (cmdSimples)
+
+
+State 141
+
+   84 cmdSimples: cmdSkip .
+
+    $default  reduce using rule 84 (cmdSimples)
+
+
+State 142
+
+   85 cmdSimples: cmdReturn .
+
+    $default  reduce using rule 85 (cmdSimples)
+
+
+State 143
+
+   86 cmdSimples: cmdChamadaProc .
+
+    $default  reduce using rule 86 (cmdSimples)
+
+
+State 144
+
+   87 cmdSimples: cmdRead .
+
+    $default  reduce using rule 87 (cmdSimples)
+
+
+State 145
+
+   88 cmdSimples: cmdWrite .
+
+    $default  reduce using rule 88 (cmdSimples)
+
+
+State 146
+
+   61 decFunc: DEF ID '(' ')' ':' type . bloco
+
+    '{'  shift, and go to state 86
+
+    bloco  go to state 184
+
+
+State 147
+
+   70 param: ID '[' ']' .
+
+    $default  reduce using rule 70 (param)
+
+
+State 148
+
+   62 decFunc: DEF ID '(' listaParam ')' ':' . type bloco
+
+    INT          shift, and go to state 49
+    BOOL         shift, and go to state 50
+    STRING_TYPE  shift, and go to state 51
+
+    type  go to state 185
+
+
+State 149
+
+   59 decProc: DEF ID '(' listaParam ')' bloco .
+
+    $default  reduce using rule 59 (decProc)
+
+
+State 150
+
+   65 listaParam: listaParam ';' specParams .
+
+    $default  reduce using rule 65 (listaParam)
+
+
+State 151
+
+   68 listaParams: listaParams ',' param .
+
+    $default  reduce using rule 68 (listaParams)
+
+
+State 152
+
+   66 specParams: listaParams ':' type .
+
+    $default  reduce using rule 66 (specParams)
+
+
+State 153
+
+   29 specVarArranjoIni: error '[' NUMBER ']' '=' '{' . listaExp '}'
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    listaExp        go to state 186
+    variavel        go to state 40
+    Exp             go to state 98
+    cmdChamadaFunc  go to state 42
+
+
+State 154
+
+  111 cmdChamadaFunc: ID '(' listaExp ')' .
+
+    $default  reduce using rule 111 (cmdChamadaFunc)
+
+
+State 155
+
+   32 listaExp: listaExp ',' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 187
+    cmdChamadaFunc  go to state 42
+
+
+State 156
+
+   34 variavel: ID '[' Exp ']' .
+
+    $default  reduce using rule 34 (variavel)
+
+
+State 157
+
+   48 Exp: Exp '?' Exp ':' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 188
+    cmdChamadaFunc  go to state 42
+
+
+State 158
+
+   28 specVarArranjoIni: ID '[' error ']' '=' '{' . listaExp '}'
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    listaExp        go to state 189
+    variavel        go to state 40
+    Exp             go to state 98
+    cmdChamadaFunc  go to state 42
+
+
+State 159
+
+   27 specVarArranjoIni: ID '[' NUMBER ']' '=' '{' . listaExp '}'
+   30                  | ID '[' NUMBER ']' '=' '{' . error '}'
+
+    error   shift, and go to state 190
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    listaExp        go to state 191
+    variavel        go to state 40
+    Exp             go to state 98
+    cmdChamadaFunc  go to state 42
+
+
+State 160
+
+  117 type: STRING_TYPE '[' NUMBER ']' .
+
+    $default  reduce using rule 117 (type)
+
+
+State 161
+
+   63 decFunc: DEF ID '(' error ')' type bloco .
+
+    $default  reduce using rule 63 (decFunc)
+
+
+State 162
+
+  100 cmdWhile: WHILE '(' . Exp ')' cmd
+  101         | WHILE '(' . error ')' cmd
+
+    error   shift, and go to state 192
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 193
+    cmdChamadaFunc  go to state 42
+
+
+State 163
+
+  102 cmdFor: FOR '(' . atrib ';' Exp ';' atrib ')' cmd
+  103       | FOR '(' . error ')' cmd
+
+    error  shift, and go to state 194
+    ID     shift, and go to state 166
+
+    variavel  go to state 130
+    atrib     go to state 195
+
+
+State 164
+
+   96 cmdIf: IF '(' . Exp ')' cmd
+   97      | IF '(' . Exp ')' cmd ELSE cmd
+   98      | IF '(' . error ')' cmd
+   99      | IF '(' . error ')' cmd ELSE cmd
+
+    error   shift, and go to state 196
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 197
+    cmdChamadaFunc  go to state 42
+
+
+State 165
+
+   32 listaExp: listaExp . ',' Exp
+  113 cmdWrite: WRITE listaExp . ';'
+
+    ';'  shift, and go to state 198
+    ','  shift, and go to state 155
+
+
+State 166
+
+   33 variavel: ID .
+   34         | ID . '[' Exp ']'
+
+    '['  shift, and go to state 65
+
+    $default  reduce using rule 33 (variavel)
+
+
+State 167
+
+  112 cmdRead: READ variavel . ';'
+
+    ';'  shift, and go to state 199
+
+
+State 168
+
+  108 cmdChamadaProc: ID '(' . ')' ';'
+  109               | ID '(' . listaExp ')' ';'
+
+    '('     shift, and go to state 32
+    ')'     shift, and go to state 200
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    listaExp        go to state 201
+    variavel        go to state 40
+    Exp             go to state 98
+    cmdChamadaFunc  go to state 42
+
+
+State 169
+
+  106 cmdReturn: RETURN ';' .
+
+    $default  reduce using rule 106 (cmdReturn)
+
+
+State 170
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+  107 cmdReturn: RETURN Exp . ';'
+
+    ';'   shift, and go to state 202
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 171
+
+  105 cmdSkip: SKIP ';' .
+
+    $default  reduce using rule 105 (cmdSkip)
+
+
+State 172
+
+  104 cmdStop: STOP ';' .
+
+    $default  reduce using rule 104 (cmdStop)
+
+
+State 173
+
+   72 bloco: '{' listaDec '}' .
+
+    $default  reduce using rule 72 (bloco)
+
+
+State 174
+
+   71 bloco: '{' listaDec listaCmd . '}'
+   76 listaCmd: listaCmd . cmd
+
+    '{'     shift, and go to state 86
+    '}'     shift, and go to state 203
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 182
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 175
+
+   90 atrib: variavel '=' . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 204
+    cmdChamadaFunc  go to state 42
+
+
+State 176
+
+   91 atrib: variavel "+=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 205
+    cmdChamadaFunc  go to state 42
+
+
+State 177
+
+   92 atrib: variavel "-=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 206
+    cmdChamadaFunc  go to state 42
+
+
+State 178
+
+   93 atrib: variavel "*=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 207
+    cmdChamadaFunc  go to state 42
+
+
+State 179
+
+   94 atrib: variavel "/=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 208
+    cmdChamadaFunc  go to state 42
+
+
+State 180
+
+   95 atrib: variavel "%=" . Exp
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 209
+    cmdChamadaFunc  go to state 42
+
+
+State 181
+
+   73 bloco: '{' listaCmd '}' .
+
+    $default  reduce using rule 73 (bloco)
+
+
+State 182
+
+   76 listaCmd: listaCmd cmd .
+
+    $default  reduce using rule 76 (listaCmd)
+
+
+State 183
+
+   89 cmdAtrib: atrib ';' .
+
+    $default  reduce using rule 89 (cmdAtrib)
+
+
+State 184
+
+   61 decFunc: DEF ID '(' ')' ':' type bloco .
+
+    $default  reduce using rule 61 (decFunc)
+
+
+State 185
+
+   62 decFunc: DEF ID '(' listaParam ')' ':' type . bloco
+
+    '{'  shift, and go to state 86
+
+    bloco  go to state 210
+
+
+State 186
+
+   29 specVarArranjoIni: error '[' NUMBER ']' '=' '{' listaExp . '}'
+   32 listaExp: listaExp . ',' Exp
+
+    '}'  shift, and go to state 211
+    ','  shift, and go to state 155
+
+
+State 187
+
+   32 listaExp: listaExp ',' Exp .
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 32 (listaExp)
+
+
+State 188
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   48    | Exp '?' Exp ':' Exp .
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 48 (Exp)
+
+
+State 189
+
+   28 specVarArranjoIni: ID '[' error ']' '=' '{' listaExp . '}'
+   32 listaExp: listaExp . ',' Exp
+
+    '}'  shift, and go to state 212
+    ','  shift, and go to state 155
+
+
+State 190
+
+   30 specVarArranjoIni: ID '[' NUMBER ']' '=' '{' error . '}'
+
+    '}'  shift, and go to state 213
+
+
+State 191
+
+   27 specVarArranjoIni: ID '[' NUMBER ']' '=' '{' listaExp . '}'
+   32 listaExp: listaExp . ',' Exp
+
+    '}'  shift, and go to state 214
+    ','  shift, and go to state 155
+
+
+State 192
+
+  101 cmdWhile: WHILE '(' error . ')' cmd
+
+    ')'  shift, and go to state 215
+
+
+State 193
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+  100 cmdWhile: WHILE '(' Exp . ')' cmd
+
+    ')'   shift, and go to state 216
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 194
+
+  103 cmdFor: FOR '(' error . ')' cmd
+
+    ')'  shift, and go to state 217
+
+
+State 195
+
+  102 cmdFor: FOR '(' atrib . ';' Exp ';' atrib ')' cmd
+
+    ';'  shift, and go to state 218
+
+
+State 196
+
+   98 cmdIf: IF '(' error . ')' cmd
+   99      | IF '(' error . ')' cmd ELSE cmd
+
+    ')'  shift, and go to state 219
+
+
+State 197
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   96 cmdIf: IF '(' Exp . ')' cmd
+   97      | IF '(' Exp . ')' cmd ELSE cmd
+
+    ')'   shift, and go to state 220
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 198
+
+  113 cmdWrite: WRITE listaExp ';' .
+
+    $default  reduce using rule 113 (cmdWrite)
+
+
+State 199
+
+  112 cmdRead: READ variavel ';' .
+
+    $default  reduce using rule 112 (cmdRead)
+
+
+State 200
+
+  108 cmdChamadaProc: ID '(' ')' . ';'
+
+    ';'  shift, and go to state 221
+
+
+State 201
+
+   32 listaExp: listaExp . ',' Exp
+  109 cmdChamadaProc: ID '(' listaExp . ')' ';'
+
+    ')'  shift, and go to state 222
+    ','  shift, and go to state 155
+
+
+State 202
+
+  107 cmdReturn: RETURN Exp ';' .
+
+    $default  reduce using rule 107 (cmdReturn)
+
+
+State 203
+
+   71 bloco: '{' listaDec listaCmd '}' .
+
+    $default  reduce using rule 71 (bloco)
+
+
+State 204
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   90 atrib: variavel '=' Exp .
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 90 (atrib)
+
+
+State 205
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   91 atrib: variavel "+=" Exp .
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 91 (atrib)
+
+
+State 206
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   92 atrib: variavel "-=" Exp .
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 92 (atrib)
+
+
+State 207
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   93 atrib: variavel "*=" Exp .
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 93 (atrib)
+
+
+State 208
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   94 atrib: variavel "/=" Exp .
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 94 (atrib)
+
+
+State 209
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+   95 atrib: variavel "%=" Exp .
+
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+    $default  reduce using rule 95 (atrib)
+
+
+State 210
+
+   62 decFunc: DEF ID '(' listaParam ')' ':' type bloco .
+
+    $default  reduce using rule 62 (decFunc)
+
+
+State 211
+
+   29 specVarArranjoIni: error '[' NUMBER ']' '=' '{' listaExp '}' .
+
+    $default  reduce using rule 29 (specVarArranjoIni)
+
+
+State 212
+
+   28 specVarArranjoIni: ID '[' error ']' '=' '{' listaExp '}' .
+
+    $default  reduce using rule 28 (specVarArranjoIni)
+
+
+State 213
+
+   30 specVarArranjoIni: ID '[' NUMBER ']' '=' '{' error '}' .
+
+    $default  reduce using rule 30 (specVarArranjoIni)
+
+
+State 214
+
+   27 specVarArranjoIni: ID '[' NUMBER ']' '=' '{' listaExp '}' .
+
+    $default  reduce using rule 27 (specVarArranjoIni)
+
+
+State 215
+
+  101 cmdWhile: WHILE '(' error ')' . cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 223
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 216
+
+  100 cmdWhile: WHILE '(' Exp ')' . cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 224
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 217
+
+  103 cmdFor: FOR '(' error ')' . cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 225
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 218
+
+  102 cmdFor: FOR '(' atrib ';' . Exp ';' atrib ')' cmd
+
+    '('     shift, and go to state 32
+    '-'     shift, and go to state 33
+    '!'     shift, and go to state 34
+    NUMBER  shift, and go to state 35
+    STRING  shift, and go to state 36
+    ID      shift, and go to state 37
+    TRUE    shift, and go to state 38
+    FALSE   shift, and go to state 39
+
+    variavel        go to state 40
+    Exp             go to state 226
+    cmdChamadaFunc  go to state 42
+
+
+State 219
+
+   98 cmdIf: IF '(' error ')' . cmd
+   99      | IF '(' error ')' . cmd ELSE cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 227
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 220
+
+   96 cmdIf: IF '(' Exp ')' . cmd
+   97      | IF '(' Exp ')' . cmd ELSE cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 228
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 221
+
+  108 cmdChamadaProc: ID '(' ')' ';' .
+
+    $default  reduce using rule 108 (cmdChamadaProc)
+
+
+State 222
+
+  109 cmdChamadaProc: ID '(' listaExp ')' . ';'
+
+    ';'  shift, and go to state 229
+
+
+State 223
+
+  101 cmdWhile: WHILE '(' error ')' cmd .
+
+    $default  reduce using rule 101 (cmdWhile)
+
+
+State 224
+
+  100 cmdWhile: WHILE '(' Exp ')' cmd .
+
+    $default  reduce using rule 100 (cmdWhile)
+
+
+State 225
+
+  103 cmdFor: FOR '(' error ')' cmd .
+
+    $default  reduce using rule 103 (cmdFor)
+
+
+State 226
+
+   40 Exp: Exp . '+' Exp
+   41    | Exp . '-' Exp
+   42    | Exp . '*' Exp
+   43    | Exp . '/' Exp
+   44    | Exp . '%' Exp
+   48    | Exp . '?' Exp ':' Exp
+   49    | Exp . '<' Exp
+   50    | Exp . "<=" Exp
+   51    | Exp . '>' Exp
+   52    | Exp . ">=" Exp
+   53    | Exp . "==" Exp
+   54    | Exp . "!=" Exp
+   55    | Exp . "&&" Exp
+   56    | Exp . "||" Exp
+  102 cmdFor: FOR '(' atrib ';' Exp . ';' atrib ')' cmd
+
+    ';'   shift, and go to state 230
+    '?'   shift, and go to state 66
+    "||"  shift, and go to state 67
+    "&&"  shift, and go to state 68
+    "=="  shift, and go to state 69
+    "!="  shift, and go to state 70
+    '<'   shift, and go to state 71
+    "<="  shift, and go to state 72
+    '>'   shift, and go to state 73
+    ">="  shift, and go to state 74
+    '+'   shift, and go to state 75
+    '-'   shift, and go to state 76
+    '*'   shift, and go to state 77
+    '/'   shift, and go to state 78
+    '%'   shift, and go to state 79
+
+
+State 227
+
+   98 cmdIf: IF '(' error ')' cmd .
+   99      | IF '(' error ')' cmd . ELSE cmd
+
+    ELSE  shift, and go to state 231
+
+    $default  reduce using rule 98 (cmdIf)
+
+
+State 228
+
+   96 cmdIf: IF '(' Exp ')' cmd .
+   97      | IF '(' Exp ')' cmd . ELSE cmd
+
+    ELSE  shift, and go to state 232
+
+    $default  reduce using rule 96 (cmdIf)
+
+
+State 229
+
+  109 cmdChamadaProc: ID '(' listaExp ')' ';' .
+
+    $default  reduce using rule 109 (cmdChamadaProc)
+
+
+State 230
+
+  102 cmdFor: FOR '(' atrib ';' Exp ';' . atrib ')' cmd
+
+    ID  shift, and go to state 166
+
+    variavel  go to state 130
+    atrib     go to state 233
+
+
+State 231
+
+   99 cmdIf: IF '(' error ')' cmd ELSE . cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 234
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 232
+
+   97 cmdIf: IF '(' Exp ')' cmd ELSE . cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 235
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 233
+
+  102 cmdFor: FOR '(' atrib ';' Exp ';' atrib . ')' cmd
+
+    ')'  shift, and go to state 236
+
+
+State 234
+
+   99 cmdIf: IF '(' error ')' cmd ELSE cmd .
+
+    $default  reduce using rule 99 (cmdIf)
+
+
+State 235
+
+   97 cmdIf: IF '(' Exp ')' cmd ELSE cmd .
+
+    $default  reduce using rule 97 (cmdIf)
+
+
+State 236
+
+  102 cmdFor: FOR '(' atrib ';' Exp ';' atrib ')' . cmd
+
+    '{'     shift, and go to state 86
+    WHILE   shift, and go to state 120
+    FOR     shift, and go to state 121
+    IF      shift, and go to state 122
+    WRITE   shift, and go to state 123
+    READ    shift, and go to state 124
+    ID      shift, and go to state 125
+    RETURN  shift, and go to state 126
+    SKIP    shift, and go to state 127
+    STOP    shift, and go to state 128
+
+    variavel        go to state 130
+    bloco           go to state 131
+    cmd             go to state 237
+    cmdSimples      go to state 134
+    cmdAtrib        go to state 135
+    atrib           go to state 136
+    cmdIf           go to state 137
+    cmdWhile        go to state 138
+    cmdFor          go to state 139
+    cmdStop         go to state 140
+    cmdSkip         go to state 141
+    cmdReturn       go to state 142
+    cmdChamadaProc  go to state 143
+    cmdRead         go to state 144
+    cmdWrite        go to state 145
+
+
+State 237
+
+  102 cmdFor: FOR '(' atrib ';' Exp ';' atrib ')' cmd .
+
+    $default  reduce using rule 102 (cmdFor)

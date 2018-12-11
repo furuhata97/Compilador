@@ -3,7 +3,8 @@
 #include <string>
 #include <map>
 #include <list>
-#include "exp.h"
+#include <typeinfo>
+#include "comp.h"
 
 using namespace std;
 
@@ -23,9 +24,14 @@ void number_node:: print() {
   cout << num;
 }
 
-  float number_node::evaluate() { 
-    cout << "number_node: operand = " << num << endl;
-    return num; }
+  float number_node::evaluate() {
+    if(typeid(num).name()=="int"){
+       cout << "number_node: operand = " << num << endl; 
+    }else{
+        cout << "Número não é do tipo inteiro" << endl;
+    }
+    return num;   
+     }
 
   id_node::id_node(string value) : id(value) {}
 
