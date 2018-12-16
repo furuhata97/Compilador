@@ -1,11 +1,16 @@
-var v[10]: int;
+// Quando uma declaração apresenta um erro, a mesma não é adicionada na tabela de símbolos
+//Erro de tamanho excessivo 
+vor v[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}: int;
 var s[15] : int;
-var 1g = 1544444444444444444444444444 : int;
+
+// Erro de tipos incompatíveis
+var b = 13 : bool;
+var c = false : string;
 
 // Procedimento de ordenação por troca
 // Observe como um parâmetro de arranjo é declarado
 
-def bubblesort(v[]: int; n: int) {
+def bubblesort(v[]: int; n) {
     var i=0, j: int;
     var trocou = true: bool;
 
@@ -60,27 +65,39 @@ def quickSort(vetor[], inicio, fim: int){
    if(inicio < j) quickSort(vetor, inicio, j);
    if(i < fim) {
        quickSort(vetor, i, fim);
-   }  
+   }
+
+   return i;  
 
 }
 
 
 def soma(v[]: int): int{
-    var total i : int;
+    var total = 0 i : int;
     for (i=0; i<10; i+=1) {
-        total+=v[i];
-
-        if(i == 9){
-            stop;
-        }
+        //erro de operando que não é do tipo int em uma operação aritmética
+        total = "total" + v[i];
     }
-
-    return total;
+    // Erro de stop fora de for ou while
+    stop;
+    return;
 }
 
 def main(): int {
     var i: int;
     var sum : int;
+
+    //Erros de expressões
+
+    var r = "string" >=  : int;
+
+    var p = "string" == false : string;
+
+    var t = 4 || 5 : bool;
+
+    var d = i > 4 ? "olar" : 7 : bool;
+
+    q = ;
 
     write "Digite os valores do arranjo V:\n";
 
@@ -105,7 +122,9 @@ def main(): int {
         read s[i];
     }
 
-    quickSort(s, 0, 9);
+    quickSort(0, 9);
+
+    algumProc();
 
     write "Arranjo ordenado por QuickSort:\nS = ";
 
@@ -116,7 +135,5 @@ def main(): int {
     write "Somando os valores do arranjo V\n";
 
     sum = soma(v);
-
-    
 
 }

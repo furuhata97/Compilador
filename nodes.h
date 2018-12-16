@@ -164,29 +164,6 @@ public:
   virtual string Nome(){ }
 };
 
-class pgm {
-public:
-  list<Dec *> *listDec;
-
-  pgm(list<Dec *> *decs) {
-    listDec = decs;
-  };
-
-  void traducao(){
-    stack<Escopo *> *tabelaDeSimbolos = new stack<Escopo *>();
-
-    EscopoGlobal *global = new EscopoGlobal("");
-
-    tabelaDeSimbolos->push(global);
-
-    for (Dec *v : *listDec){
-      if(v != nullptr){
-        v->traducaoDec(tabelaDeSimbolos);
-      }
-    }
-  };
-
-};
 
 class Var {
   public:
@@ -548,7 +525,13 @@ class BinaryExpression : public Exp {
       }
 
       if(*op == "==" || *op == "!="){
-          return "bool";
+          if (e1 == e2){
+            return "bool";
+          }else{
+            cout << "ERRO Linha: " << linha << " : Operandos da operação lógica são de tipos primitivos diferentes" << endl;
+            return "erro";
+          }
+          
       }
 
       if(*op == "&&" || *op == "||"){
@@ -619,7 +602,7 @@ class TernaryExpression : public Exp {
         if(e2 == e3){
           return "bool";
         }else{
-        cout << "ERRO Linha: " << linha << " : As expressões de se e senão apresentam tipos diferentes" << endl;
+        cout << "ERRO Linha: " << linha << " : As operações de se e senão da expressão ternária apresentam tipos diferentes" << endl;
           return "erro";
         }
       }else{
@@ -841,7 +824,7 @@ class CmdStop : public Cmd {
     void traducaoCmd(stack<Escopo *> *tabela){
       stack<Escopo *> t = *tabela;
       while(!t.empty()){
-        if(t.top()->Tipo() != "for" && t.top()->Tipo() != "while"){
+        if(t.top()->id != "for" && t.top()->id != "while"){
           t.pop();
         }else{
           return;
@@ -861,7 +844,7 @@ class CmdSkip : public Cmd {
     void traducaoCmd(stack<Escopo *> *tabela){
       stack<Escopo *> t = *tabela;
       while(!t.empty()){
-        if(t.top()->Tipo() != "for" && t.top()->Tipo() != "while"){
+        if(t.top()->id != "for" && t.top()->id != "while"){
           t.pop();
         }else{
           return;
@@ -940,6 +923,7 @@ class ChamadaProc : public Cmd {
               return;
           }else{
             cout << "ERRO Linha " << linha << " : Quantidade de argumentos na chamada do procedimento " << *id << " é inválido " << endl;
+            return;
           }
 
         }else{
@@ -980,6 +964,7 @@ class ChamadaFunc : public Exp {
               return p->Typ()->Nome();
           }else{
             cout << "ERRO Linha " << linha << " : Quantidade de argumentos na chamada da função " << *id << " é inválido " << endl;
+            return "erro";
           }
 
         }else{
@@ -1061,5 +1046,30 @@ class TypeBool : public Type {
     string Nome(){
       return *bo;
      };
+};
+
+class pgm {
+public:
+  list<Dec *> *listDec;
+
+  pgm(list<Dec *> *decs) {
+    listDec = decs;
+  };
+
+  void traducao(){
+    stack<Escopo *> *tabelaDeSimbolos = new stack<Escopo *>();
+
+    EscopoGlobal *global = new EscopoGlobal("");
+
+    tabelaDeSimbolos->push(global);
+
+    int i = listDec->size();
+    for (Dec *v : *listDec){
+      if(v != nullptr){
+        v->traducaoDec(tabelaDeSimbolos);
+      }
+    }
+  };
+
 };
 
